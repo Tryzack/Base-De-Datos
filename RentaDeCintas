@@ -1,0 +1,104 @@
+Table peliculas {
+  titulo text
+  id_peli int [primary key]
+}
+
+Table socio {
+  id_socio int [primary key]
+  nombre text
+  direccion text
+  telefono int
+}
+
+Table genero  {
+  id_genero int [primary key]
+  genero text
+}
+
+Table director  {
+  id_director int [primary key]
+  director text
+}
+
+Table actor {
+  id_actor int [primary key]
+  actor text
+}
+
+Table peli_genero {
+  id_peli int
+  id_genero int
+}
+
+Table peli_directores {
+  id_peli int
+  id_director int
+}
+
+table peli_actores {
+  id_peli int
+  id_actor int
+}
+
+Table socio_genero {
+  id_socio int
+  id_genero int
+}
+
+Table socio_directores {
+  id_socio int
+  id_director int
+}
+
+table socio_actores {
+  id_socio int
+  id_actor int
+}
+
+Table cintas {
+  id_cinta int [primary key]
+  id_peli int
+  fecha date
+}
+
+Table renta_cinta {
+  id_cinta int
+  id_socio int
+}
+
+Table lista_de_espera {
+  id_peli int
+  id_socio int
+}
+
+Ref: "peliculas"."id_peli" < "peli_genero"."id_peli"
+
+Ref: "genero"."id_genero" < "peli_genero"."id_genero"
+
+Ref: "peliculas"."id_peli" < "cintas"."id_peli"
+
+Ref: "peliculas"."id_peli" < "peli_directores"."id_peli"
+
+Ref: "peliculas"."id_peli" < "peli_actores"."id_peli"
+
+Ref: "peliculas"."id_peli" < "lista_de_espera"."id_peli"
+
+Ref: "cintas"."id_cinta" < "renta_cinta"."id_cinta"
+
+Ref: "socio"."id_socio" < "socio_genero"."id_socio"
+
+Ref: "genero"."id_genero" < "socio_genero"."id_genero"
+
+Ref: "socio"."id_socio" < "socio_actores"."id_socio"
+
+Ref: "actor"."id_actor" < "socio_actores"."id_actor"
+
+Ref: "socio"."id_socio" < "socio_directores"."id_socio"
+
+
+
+Ref: "director"."id_director" < "socio_directores"."id_director"
+
+Ref: "actor"."id_actor" < "peli_actores"."id_actor"
+
+Ref: "socio"."id_socio" < "lista_de_espera"."id_socio"
