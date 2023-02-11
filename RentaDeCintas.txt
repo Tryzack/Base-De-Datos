@@ -1,0 +1,279 @@
+-- Table: public.actor
+
+-- DROP TABLE IF EXISTS public.actor;
+
+CREATE TABLE IF NOT EXISTS public.actor
+(
+    id_actor integer NOT NULL,
+    actor text COLLATE pg_catalog."default",
+    CONSTRAINT actor_pkey PRIMARY KEY (id_actor)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.actor
+    OWNER to postgres;
+    
+    -- Table: public.cintas
+
+-- DROP TABLE IF EXISTS public.cintas;
+
+CREATE TABLE IF NOT EXISTS public.cintas
+(
+    id_cinta integer NOT NULL,
+    id_peli integer,
+    fecha date,
+    CONSTRAINT cintas_pkey PRIMARY KEY (id_cinta),
+    CONSTRAINT cintas_id_peli_fkey FOREIGN KEY (id_peli)
+        REFERENCES public.peliculas (id_peli) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.cintas
+    OWNER to postgres;
+    
+    -- Table: public.director
+
+-- DROP TABLE IF EXISTS public.director;
+
+CREATE TABLE IF NOT EXISTS public.director
+(
+    id_director integer NOT NULL,
+    director text COLLATE pg_catalog."default",
+    CONSTRAINT director_pkey PRIMARY KEY (id_director)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.director
+    OWNER to postgres;
+    
+    -- Table: public.genero
+
+-- DROP TABLE IF EXISTS public.genero;
+
+CREATE TABLE IF NOT EXISTS public.genero
+(
+    id_genero integer NOT NULL,
+    genero text COLLATE pg_catalog."default",
+    CONSTRAINT genero_pkey PRIMARY KEY (id_genero)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.genero
+    OWNER to postgres;
+    
+    -- Table: public.lista_de_espera
+
+-- DROP TABLE IF EXISTS public.lista_de_espera;
+
+CREATE TABLE IF NOT EXISTS public.lista_de_espera
+(
+    id_peli integer,
+    id_socio integer,
+    CONSTRAINT lista_de_espera_id_peli_fkey FOREIGN KEY (id_peli)
+        REFERENCES public.peliculas (id_peli) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT lista_de_espera_id_socio_fkey FOREIGN KEY (id_socio)
+        REFERENCES public.socio (id_socio) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.lista_de_espera
+    OWNER to postgres;
+    
+    -- Table: public.peli_actores
+
+-- DROP TABLE IF EXISTS public.peli_actores;
+
+CREATE TABLE IF NOT EXISTS public.peli_actores
+(
+    id_peli integer,
+    id_actor integer,
+    CONSTRAINT peli_actores_id_actor_fkey FOREIGN KEY (id_actor)
+        REFERENCES public.actor (id_actor) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT peli_actores_id_peli_fkey FOREIGN KEY (id_peli)
+        REFERENCES public.peliculas (id_peli) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.peli_actores
+    OWNER to postgres;
+    
+    -- Table: public.peli_directores
+
+-- DROP TABLE IF EXISTS public.peli_directores;
+
+CREATE TABLE IF NOT EXISTS public.peli_directores
+(
+    id_peli integer,
+    id_director integer,
+    CONSTRAINT peli_directores_id_peli_fkey FOREIGN KEY (id_peli)
+        REFERENCES public.peliculas (id_peli) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.peli_directores
+    OWNER to postgres;
+    
+    -- Table: public.peli_genero
+
+-- DROP TABLE IF EXISTS public.peli_genero;
+
+CREATE TABLE IF NOT EXISTS public.peli_genero
+(
+    id_peli integer,
+    id_genero integer,
+    CONSTRAINT peli_genero_id_genero_fkey FOREIGN KEY (id_genero)
+        REFERENCES public.genero (id_genero) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT peli_genero_id_peli_fkey FOREIGN KEY (id_peli)
+        REFERENCES public.peliculas (id_peli) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.peli_genero
+    OWNER to postgres;
+    
+    -- Table: public.peliculas
+
+-- DROP TABLE IF EXISTS public.peliculas;
+
+CREATE TABLE IF NOT EXISTS public.peliculas
+(
+    titulo text COLLATE pg_catalog."default" NOT NULL,
+    id_peli integer NOT NULL,
+    CONSTRAINT peliculas_pkey PRIMARY KEY (id_peli)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.peliculas
+    OWNER to postgres;
+    
+    -- Table: public.renta_cinta
+
+-- DROP TABLE IF EXISTS public.renta_cinta;
+
+CREATE TABLE IF NOT EXISTS public.renta_cinta
+(
+    id_cinta integer,
+    id_socio integer,
+    CONSTRAINT renta_cinta_id_cinta_fkey FOREIGN KEY (id_cinta)
+        REFERENCES public.cintas (id_cinta) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.renta_cinta
+    OWNER to postgres;
+    
+    -- Table: public.socio
+
+-- DROP TABLE IF EXISTS public.socio;
+
+CREATE TABLE IF NOT EXISTS public.socio
+(
+    id_socio integer NOT NULL,
+    nombre text COLLATE pg_catalog."default",
+    direccion text COLLATE pg_catalog."default",
+    telefono integer,
+    CONSTRAINT socio_pkey PRIMARY KEY (id_socio)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.socio
+    OWNER to postgres;
+    
+    -- Table: public.socio_actores
+
+-- DROP TABLE IF EXISTS public.socio_actores;
+
+CREATE TABLE IF NOT EXISTS public.socio_actores
+(
+    id_socio integer,
+    id_actor integer,
+    CONSTRAINT socio_actores_id_actor_fkey FOREIGN KEY (id_actor)
+        REFERENCES public.actor (id_actor) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT socio_actores_id_socio_fkey FOREIGN KEY (id_socio)
+        REFERENCES public.socio (id_socio) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.socio_actores
+    OWNER to postgres;
+    
+    -- Table: public.socio_directores
+
+-- DROP TABLE IF EXISTS public.socio_directores;
+
+CREATE TABLE IF NOT EXISTS public.socio_directores
+(
+    id_socio integer,
+    id_director integer,
+    CONSTRAINT socio_directores_id_director_fkey FOREIGN KEY (id_director)
+        REFERENCES public.director (id_director) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT socio_directores_id_socio_fkey FOREIGN KEY (id_socio)
+        REFERENCES public.socio (id_socio) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.socio_directores
+    OWNER to postgres;
+    -- Table: public.socio_genero
+
+-- DROP TABLE IF EXISTS public.socio_genero;
+
+CREATE TABLE IF NOT EXISTS public.socio_genero
+(
+    id_socio integer,
+    id_genero integer,
+    CONSTRAINT socio_genero_id_genero_fkey FOREIGN KEY (id_genero)
+        REFERENCES public.genero (id_genero) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT socio_genero_id_socio_fkey FOREIGN KEY (id_socio)
+        REFERENCES public.socio (id_socio) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.socio_genero
+    OWNER to postgres;
+    
+    
